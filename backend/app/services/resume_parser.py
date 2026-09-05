@@ -27,14 +27,16 @@ CS_CONCEPTS = [
 
 
 def extract_text_from_pdf(file_bytes: bytes) -> str:
-    """Extract raw text from PDF bytes using PyMuPDF."""
+    """Extract raw text from PDF bytes using pypdf."""
     try:
-        import fitz  # PyMuPDF
-        doc = fitz.open(stream=file_bytes, filetype="pdf")
+        import io
+        from pypdf import PdfReader
+        reader = PdfReader(io.BytesIO(file_bytes))
         text = ""
-        for page in doc:
-            text += page.get_text()
-        doc.close()
+        for page in reader.pages:
+            extracted = page.extract_text()
+            if extracted:
+                text += extracted + "\n"
         return text
     except Exception as e:
         return ""
