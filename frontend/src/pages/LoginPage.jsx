@@ -23,7 +23,20 @@ const LoginPage = () => {
         navigate('/dashboard');
       }
     } catch (err) {
-      setError(err.response?.data?.detail || 'Invalid email or password');
+      if (err.response?.data?.detail) {
+        const d = err.response.data.detail;
+        if (Array.isArray(d)) {
+          setError(d.map((item) => `${item.loc?.slice(-1)[0] || 'field'}: ${item.msg}`).join(', '));
+        } else if (typeof d === 'string') {
+          setError(d);
+        } else {
+          setError(JSON.stringify(d));
+        }
+      } else if (err.code === 'ERR_NETWORK' || !err.response) {
+        setError('Cannot connect to backend server. If using Render free tier, it may take 30-50s to wake up on the first request. Also ensure VITE_API_URL is configured on Vercel.');
+      } else {
+        setError(err.message || 'Invalid email or password');
+      }
     } finally {
       setSubmitting(false);
     }
