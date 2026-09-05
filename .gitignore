@@ -1,0 +1,28 @@
+# Python / Backend
+__pycache__/
+*.py[cod]
+*$py.class
+*.env
+.env
+*.db
+*.sqlite3
+venv/
+.venv/
+env/
+dist/
+build/
+*.egg-info/
+
+# Node / Frontend
+node_modules/
+frontend/dist/
+frontend/dist-ssr/
+*.local
+.npm
+.eslintcache
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
